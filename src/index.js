@@ -49,7 +49,74 @@ const hashMap = () => {
     pointer = 0;
   };
 
-  return { bucket, hash, set };
+  const get = (key) => {
+    const hashKey = hash(key);
+
+    let pointer = bucket[hashKey];
+    if (pointer === undefined) return null;
+    if (pointer.key === key) {
+      return pointer.value;
+    }
+    while (pointer.next !== null) {
+      pointer = pointer.next;
+      if (pointer.key === key) {
+        return pointer.value;
+      }
+    }
+
+    return null;
+  };
+
+  const has = (key) => {
+    const hashKey = hash(key);
+
+    let pointer = bucket[hashKey];
+    if (pointer === undefined) return false;
+    if (pointer.key === key) return true;
+    while (pointer.next !== null) {
+      pointer = pointer.next;
+      if (pointer.key === key) return true;
+    }
+
+    return false;
+  };
+
+  const remove = (key) => {
+    const hashKey = hash(key);
+
+    let pointer = bucket[hashKey];
+    if (pointer === undefined) return false;
+    if (pointer.key === key) {
+      if (pointer.next !== null) {
+        bucket[hashKey] = bucket[hashKey].next;
+        pointer = pointer.next;
+        return true;
+      }
+      bucket[hashKey] = undefined;
+      pointer = undefined;
+      return true;
+    }
+
+    while (pointer.next !== null && pointer.next.key !== key) {
+      pointer = pointer.next;
+    }
+
+    if (pointer.next.key !== key) return false;
+
+    let tmp = pointer.next;
+
+    if (pointer.next.next !== null) {
+      pointer.next = tmp.next;
+      tmp = null;
+      return true;
+    }
+
+    pointer.next = null;
+    tmp = null;
+    return true;
+  };
+
+  return { bucket, hash, set, get, has, remove };
 };
 
 const aa = hashMap();
@@ -57,4 +124,5 @@ const aa = hashMap();
 aa.set("ciao", "darling");
 aa.set("hello", "erere");
 aa.set("Hello", "trtr");
+console.log(aa.remove("hello"));
 console.log(aa);
