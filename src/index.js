@@ -116,7 +116,23 @@ const hashMap = () => {
     return true;
   };
 
-  return { bucket, hash, set, get, has, remove };
+  const length = () => {
+    let retLength = 0;
+    for (let i = 0; i < bucket.length; i++) {
+      let tmp = bucket[i];
+      if (tmp !== undefined) {
+        retLength += 1;
+        while (tmp.next !== null) {
+          tmp = tmp.next;
+          retLength += 1;
+        }
+      }
+    }
+
+    return retLength;
+  };
+
+  return { bucket, hash, set, get, has, remove, length };
 };
 
 const aa = hashMap();
@@ -124,5 +140,6 @@ const aa = hashMap();
 aa.set("ciao", "darling");
 aa.set("hello", "erere");
 aa.set("Hello", "trtr");
-console.log(aa.remove("hello"));
-console.log(aa);
+aa.set("hEllO", "ilovepotatoes");
+aa.set("iloveu", "234");
+console.log(aa.length());
