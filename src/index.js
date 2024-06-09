@@ -132,7 +132,9 @@ const hashMap = () => {
     return retLength;
   };
 
-  return { bucket, hash, set, get, has, remove, length };
+  const clear = () => {};
+
+  return { bucket, hash, set, get, has, remove, length, clear };
 };
 
 const aa = hashMap();
