@@ -4,8 +4,8 @@ const node = (key, value) => {
 };
 
 const hashMap = () => {
-  const bucket = new Array(16).fill(undefined);
-  const loadFactor = 0;
+  let bucket = new Array(16).fill(undefined);
+  let loadFactor = 0.75;
 
   const hash = (key) => {
     let hashCode = 0;
@@ -29,6 +29,10 @@ const hashMap = () => {
     if (pointer === undefined) {
       pointer = node(newKey, newValue);
       bucket[hashKey] = pointer;
+      // eslint-disable-next-line no-use-before-define
+      loadFactor = length() / bucket.length;
+      // eslint-disable-next-line no-use-before-define
+      if (loadFactor > 0.75) rehashing();
       return;
     }
 
@@ -46,7 +50,10 @@ const hashMap = () => {
     }
 
     pointer.next = node(newKey, newValue);
-
+    // eslint-disable-next-line no-use-before-define
+    loadFactor = length() / bucket.length;
+    // eslint-disable-next-line no-use-before-define
+    if (loadFactor > 0.75) rehashing();
     pointer = 0;
   };
 
@@ -91,6 +98,8 @@ const hashMap = () => {
       if (pointer.next !== null) {
         bucket[hashKey] = bucket[hashKey].next;
         pointer = pointer.next;
+        // eslint-disable-next-line no-use-before-define
+        loadFactor = length() / bucket.length;
         return true;
       }
       bucket[hashKey] = undefined;
@@ -109,11 +118,15 @@ const hashMap = () => {
     if (pointer.next.next !== null) {
       pointer.next = tmp.next;
       tmp = null;
+      // eslint-disable-next-line no-use-before-define
+      loadFactor = length() / bucket.length;
       return true;
     }
 
     pointer.next = null;
     tmp = null;
+    // eslint-disable-next-line no-use-before-define
+    loadFactor = length() / bucket.length;
     return true;
   };
 
@@ -193,6 +206,18 @@ const hashMap = () => {
     return res;
   };
 
+  const rehashing = () => {
+    const newArr = entries();
+
+    bucket = new Array(32).fill(undefined);
+
+    loadFactor = newArr.length / bucket.length;
+
+    for (let i = 0; i < newArr.length; i++) {
+      set(newArr[i][0], newArr[i][1]);
+    }
+  };
+
   return {
     bucket,
     hash,
@@ -205,6 +230,7 @@ const hashMap = () => {
     keys,
     values,
     entries,
+    rehashing,
   };
 };
 
@@ -215,4 +241,15 @@ aa.set("hello", "erere");
 aa.set("Hello", "trtr");
 aa.set("hEllO", "ilovepotatoes");
 aa.set("iloveu", "234");
-console.log(aa.entries());
+aa.set("sdkjsefois", "22334");
+aa.set("qwe", "23674");
+aa.set("uuuu", "237894");
+aa.set("iiii", "2348989");
+aa.set("aaaau", "234234");
+aa.set("zzzzu", "23411");
+aa.set("ixxxxxveu", "234444");
+aa.set("qqqqqqq", "23422");
+aa.set("rtyryrty", "23422");
+aa.set("yuiyuiy", "23422");
+aa.set("iopiop", "23422");
+console.log(aa);
