@@ -5,6 +5,7 @@ const node = (key, value) => {
 
 const hashMap = () => {
   const bucket = new Array(16).fill(undefined);
+  const loadFactor = 0;
 
   const hash = (key) => {
     let hashCode = 0;
@@ -132,9 +133,79 @@ const hashMap = () => {
     return retLength;
   };
 
-  const clear = () => {};
+  const clear = () => {
+    for (let i = 0; i < bucket.length; i++) {
+      if (bucket[i] !== undefined && bucket[i] !== null) {
+        bucket[i].next = null;
+        bucket[i] = undefined;
+      }
+    }
+  };
 
-  return { bucket, hash, set, get, has, remove, length, clear };
+  const keys = () => {
+    const res = [];
+
+    for (let i = 0; i < bucket.length; i++) {
+      let tmp = bucket[i];
+      if (tmp !== null && tmp !== undefined) {
+        res.push(tmp.key);
+        while (tmp.next !== null) {
+          tmp = tmp.next;
+          res.push(tmp.key);
+        }
+      }
+    }
+    return res;
+  };
+
+  const values = () => {
+    const res = [];
+
+    for (let i = 0; i < bucket.length; i++) {
+      let tmp = bucket[i];
+      if (tmp !== null && tmp !== undefined) {
+        res.push(tmp.value);
+        while (tmp.next !== null) {
+          tmp = tmp.next;
+          res.push(tmp.value);
+        }
+      }
+    }
+    return res;
+  };
+
+  const entries = () => {
+    const res = [[]];
+    let countArr = 0;
+
+    for (let i = 0; i < bucket.length; i++) {
+      let tmp = bucket[i];
+      if (tmp !== null && tmp !== undefined) {
+        res[countArr] = [tmp.key, tmp.value];
+        countArr += 1;
+        while (tmp.next !== null) {
+          tmp = tmp.next;
+          res[countArr] = [tmp.key, tmp.value];
+          countArr += 1;
+        }
+      }
+    }
+    return res;
+  };
+
+  return {
+    bucket,
+    hash,
+    set,
+    get,
+    has,
+    remove,
+    length,
+    clear,
+    keys,
+    values,
+    entries,
+  };
 };
 
 const aa = hashMap();
@@ -144,4 +215,4 @@ aa.set("hello", "erere");
 aa.set("Hello", "trtr");
 aa.set("hEllO", "ilovepotatoes");
 aa.set("iloveu", "234");
-console.log(aa.length());
+console.log(aa.entries());
