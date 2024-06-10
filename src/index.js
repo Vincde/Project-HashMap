@@ -32,7 +32,7 @@ const hashMap = () => {
       // eslint-disable-next-line no-use-before-define
       loadFactor = length() / bucket.length;
       // eslint-disable-next-line no-use-before-define
-      if (loadFactor > 0.75) rehashing();
+      rehashing();
       return;
     }
 
@@ -53,7 +53,7 @@ const hashMap = () => {
     // eslint-disable-next-line no-use-before-define
     loadFactor = length() / bucket.length;
     // eslint-disable-next-line no-use-before-define
-    if (loadFactor > 0.75) rehashing();
+    rehashing();
     pointer = 0;
   };
 
@@ -153,6 +153,7 @@ const hashMap = () => {
         bucket[i] = undefined;
       }
     }
+    bucket = null;
   };
 
   const keys = () => {
@@ -206,20 +207,22 @@ const hashMap = () => {
     return res;
   };
 
-  const rehashing = () => {
-    const newArr = entries();
+  function rehashing() {
+    if (loadFactor > 0.75) {
+      const newArr = entries();
 
-    bucket = new Array(32).fill(undefined);
+      clear();
+      bucket = new Array(32).fill(undefined);
 
-    loadFactor = newArr.length / bucket.length;
+      loadFactor = newArr.length / bucket.length;
 
-    for (let i = 0; i < newArr.length; i++) {
-      set(newArr[i][0], newArr[i][1]);
+      for (let i = 0; i < newArr.length; i++) {
+        set(newArr[i][0], newArr[i][1]);
+      }
     }
-  };
+  }
 
   return {
-    bucket,
     hash,
     set,
     get,
@@ -230,7 +233,6 @@ const hashMap = () => {
     keys,
     values,
     entries,
-    rehashing,
   };
 };
 
