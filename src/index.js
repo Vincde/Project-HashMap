@@ -4,7 +4,24 @@ const node = (key, value) => {
 };
 
 const hashMap = () => {
-  let bucket = new Array(16).fill(undefined);
+  const bucket = [
+    undefined,
+    undefined,
+    undefined,
+    undefined,
+    undefined,
+    undefined,
+    undefined,
+    undefined,
+    undefined,
+    undefined,
+    undefined,
+    undefined,
+    undefined,
+    undefined,
+    undefined,
+    undefined,
+  ];
   let loadFactor = 0.75;
 
   const hash = (key) => {
@@ -33,8 +50,10 @@ const hashMap = () => {
       // eslint-disable-next-line no-use-before-define
       loadFactor = length() / bucket.length;
 
-      // eslint-disable-next-line no-use-before-define
-      rehashing();
+      if (loadFactor > 0.75) {
+        // eslint-disable-next-line no-use-before-define
+        rehashing();
+      }
 
       return;
     }
@@ -55,8 +74,11 @@ const hashMap = () => {
     pointer.next = node(newKey, newValue);
     // eslint-disable-next-line no-use-before-define
     loadFactor = length() / bucket.length;
-    // eslint-disable-next-line no-use-before-define
-    rehashing();
+
+    if (loadFactor > 0.75) {
+      // eslint-disable-next-line no-use-before-define
+      rehashing();
+    }
     pointer = 0;
   };
 
@@ -151,12 +173,8 @@ const hashMap = () => {
 
   const clear = () => {
     for (let i = 0; i < bucket.length; i++) {
-      if (bucket[i] !== undefined && bucket[i] !== null) {
-        bucket[i].next = null;
-        bucket[i] = undefined;
-      }
+      bucket[i] = undefined;
     }
-    bucket = null;
   };
 
   const keys = () => {
@@ -210,18 +228,23 @@ const hashMap = () => {
     return res;
   };
 
+  // eslint-disable-next-line no-shadow
   const rehashing = () => {
-    if (loadFactor > 0.75) {
-      const newArr = entries();
+    const newArr = entries();
+    clear();
 
-      clear();
-      const newBucket = new Array(32).fill(undefined);
+    bucket.length = 32;
+    for (let j = 0; j < bucket.length; j++) bucket[j] = undefined;
 
-      loadFactor = newArr.length / newBucket.length;
+    loadFactor = newArr.length / bucket.length;
+
+    for (let i = 0; i < newArr.length; i++) {
+      set(newArr[i][0], newArr[i][1]);
     }
   };
 
   return {
+    bucket,
     hash,
     set,
     get,
