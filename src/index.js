@@ -29,10 +29,13 @@ const hashMap = () => {
     if (pointer === undefined) {
       pointer = node(newKey, newValue);
       bucket[hashKey] = pointer;
+
       // eslint-disable-next-line no-use-before-define
       loadFactor = length() / bucket.length;
+
       // eslint-disable-next-line no-use-before-define
       rehashing();
+
       return;
     }
 
@@ -207,20 +210,16 @@ const hashMap = () => {
     return res;
   };
 
-  function rehashing() {
+  const rehashing = () => {
     if (loadFactor > 0.75) {
       const newArr = entries();
 
       clear();
-      bucket = new Array(32).fill(undefined);
+      const newBucket = new Array(32).fill(undefined);
 
-      loadFactor = newArr.length / bucket.length;
-
-      for (let i = 0; i < newArr.length; i++) {
-        set(newArr[i][0], newArr[i][1]);
-      }
+      loadFactor = newArr.length / newBucket.length;
     }
-  }
+  };
 
   return {
     hash,
