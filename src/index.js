@@ -244,12 +244,24 @@ const hashMap = () => {
   };
 };
 
-const aa = hashMap();
+/* class HashSet {
+  constructor() {
+    this.bucket = [];
+    for (let i = 0; i < 16; i++) {
+      this.bucket[i] = undefined;
+    }
+  }
 
-aa.set("ciao", "darling");
-aa.set("hello", "erere");
-aa.set("Hello", "trtr");
-aa.set("hEllO", "ilovepotatoes");
-aa.set("iloveu", "234");
-aa.set("sdkjsefois", "22334");
-aa.set("qwe", "23674");
+  hash(key) {
+    let hashCode = 0;
+    let res = 0;
+
+    const primeNumber = 31;
+    for (let i = 0; i < key.length; i++) {
+      hashCode = primeNumber * hashCode + key.charCodeAt(i);
+      res = hashCode % this.bucket.length;
+    }
+
+    return res;
+  }
+} */
