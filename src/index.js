@@ -1,4 +1,7 @@
-const node = (key, value) => {
+// eslint-disable-next-line import/no-named-as-default, import/no-named-as-default-member, import/extensions
+import HashSet from "./hashSet.js";
+
+const node = (key, value = undefined) => {
   const next = null;
   return { key, value, next };
 };
@@ -244,24 +247,8 @@ const hashMap = () => {
   };
 };
 
-/* class HashSet {
-  constructor() {
-    this.bucket = [];
-    for (let i = 0; i < 16; i++) {
-      this.bucket[i] = undefined;
-    }
-  }
+export default node;
 
-  hash(key) {
-    let hashCode = 0;
-    let res = 0;
-
-    const primeNumber = 31;
-    for (let i = 0; i < key.length; i++) {
-      hashCode = primeNumber * hashCode + key.charCodeAt(i);
-      res = hashCode % this.bucket.length;
-    }
-
-    return res;
-  }
-} */
+const aa = new HashSet();
+aa.set("ciao");
+console.log(aa);
