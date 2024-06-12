@@ -4,24 +4,10 @@ const node = (key, value) => {
 };
 
 const hashMap = () => {
-  const bucket = [
-    undefined,
-    undefined,
-    undefined,
-    undefined,
-    undefined,
-    undefined,
-    undefined,
-    undefined,
-    undefined,
-    undefined,
-    undefined,
-    undefined,
-    undefined,
-    undefined,
-    undefined,
-    undefined,
-  ];
+  const bucket = [];
+  for (let i = 0; i < 16; i++) {
+    bucket[i] = undefined;
+  }
   let loadFactor = 0.75;
 
   const hash = (key) => {
@@ -233,7 +219,7 @@ const hashMap = () => {
     const newArr = entries();
     clear();
 
-    bucket.length = 32;
+    bucket.length *= 2;
     for (let j = 0; j < bucket.length; j++) bucket[j] = undefined;
 
     loadFactor = newArr.length / bucket.length;
@@ -267,13 +253,3 @@ aa.set("hEllO", "ilovepotatoes");
 aa.set("iloveu", "234");
 aa.set("sdkjsefois", "22334");
 aa.set("qwe", "23674");
-aa.set("uuuu", "237894");
-aa.set("iiii", "2348989");
-aa.set("aaaau", "234234");
-aa.set("zzzzu", "23411");
-aa.set("ixxxxxveu", "234444");
-aa.set("qqqqqqq", "23422");
-aa.set("rtyryrty", "23422");
-aa.set("yuiyuiy", "23422");
-aa.set("iopiop", "23422");
-console.log(aa);
