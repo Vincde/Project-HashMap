@@ -251,4 +251,11 @@ export default node;
 
 const aa = new HashSet();
 aa.set("ciao");
+aa.set("ciao");
+aa.set("Ciao");
+aa.set("CiAo");
+aa.set("america");
+aa.set("olanda");
+aa.remove("ciao");
+
 console.log(aa);

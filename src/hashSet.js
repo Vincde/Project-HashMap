@@ -26,6 +26,85 @@ export default class HashSet {
     const hashCode = this.hash(key);
     if (this.bucket[hashCode] === undefined) {
       this.bucket[hashCode] = node(key);
+    } else if (this.bucket[hashCode].key === key) {
+      this.bucket[hashCode].key = key;
+    } else {
+      let tmp = this.bucket[hashCode];
+      while (tmp.next !== null) {
+        tmp = tmp.next;
+        if (tmp.key === key) {
+          tmp.key = key;
+          return;
+        }
+      }
+      tmp.next = node(key);
     }
+  }
+
+  get(key) {
+    const hashCode = this.hash(key);
+
+    if (this.bucket[hashCode] === null || this.bucket[hashCode] === undefined) {
+      return false;
+    }
+
+    if (this.bucket[hashCode].key === key) {
+      return key;
+    }
+    let tmp = this.bucket[hashCode];
+    while (tmp.next !== null) {
+      tmp = tmp.next;
+      if (tmp.key === key) {
+        return key;
+      }
+    }
+    return null;
+  }
+
+  has(key) {
+    const hashCode = this.hash(key);
+
+    if (this.bucket[hashCode] === null || this.bucket[hashCode] === undefined)
+      return false;
+
+    if (this.bucket[hashCode].key === key) {
+      return true;
+    }
+    let tmp = this.bucket[hashCode];
+    while (tmp.next !== null) {
+      tmp = tmp.next;
+      if (tmp.key === key) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  remove(key) {
+    const hashCode = this.hash(key);
+    let tmp = this.bucket[hashCode];
+
+    if (this.bucket[hashCode] === null || this.bucket[hashCode] === undefined)
+      return false;
+
+    if (this.bucket[hashCode].key === key) {
+      this.bucket[hashCode] = tmp.next;
+      tmp.next = null;
+    } else {
+      while (tmp.next !== null && tmp.next.key !== key) {
+        tmp = tmp.next;
+      }
+
+      if (tmp.next.key !== key) return null;
+
+      if (tmp.next.next === null) {
+        tmp.next = null;
+        return true;
+      }
+
+      tmp.next = tmp.next.next;
+    }
+
+    return null;
   }
 }
