@@ -107,4 +107,70 @@ export default class HashSet {
 
     return null;
   }
+
+  length() {
+    let tmp = this.bucket;
+    let count = 0;
+
+    for (let i = 0; i < this.bucket.length; i++) {
+      tmp = this.bucket[i];
+      if (tmp !== undefined) {
+        count += 1;
+
+        while (tmp.next !== null) {
+          tmp = tmp.next;
+          count += 1;
+        }
+      }
+    }
+
+    return count;
+  }
+
+  clear() {
+    const tmp = this.bucket;
+
+    for (let i = 0; i < tmp.length; i++) {
+      tmp[i] = undefined;
+    }
+  }
+
+  keys() {
+    const resArr = [];
+    let tmp;
+
+    for (let i = 0; i < this.bucket.length; i++) {
+      tmp = this.bucket[i];
+      if (tmp !== undefined) {
+        resArr.push(tmp.key);
+
+        while (tmp.next !== null) {
+          tmp = tmp.next;
+          resArr.push(tmp.key);
+        }
+      }
+    }
+    return resArr;
+  }
+
+  entries() {
+    const resArr = [[]];
+    let count = 0;
+    let tmp;
+
+    for (let i = 0; i < this.bucket.length; i++) {
+      tmp = this.bucket[i];
+      if (tmp !== undefined) {
+        resArr[count] = [tmp.key, null];
+        count += 1;
+        while (tmp.next !== null) {
+          tmp = tmp.next;
+          resArr[count] = [tmp.key, null];
+          count += 1;
+        }
+      }
+    }
+
+    return resArr;
+  }
 }

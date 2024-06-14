@@ -256,6 +256,6 @@ aa.set("Ciao");
 aa.set("CiAo");
 aa.set("america");
 aa.set("olanda");
-aa.remove("ciao");
+console.log(aa.entries());
 
-console.log(aa);
+/* console.log(aa); */
